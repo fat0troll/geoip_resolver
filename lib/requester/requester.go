@@ -91,6 +91,10 @@ func (rq *Requester) ProcessRequest(IPAddress string) map[string]string {
 			requestURL := service.URL + IPAddress
 			gatheredData := rq.getIPFromFreeGeoIP(requestURL)
 			return gatheredData
+		case "shiny_geoip":
+			requestURL := service.URL + IPAddress
+			gatheredData := rq.getIPFromShinyGeoIP(requestURL)
+			return gatheredData
 		}
 	}
 

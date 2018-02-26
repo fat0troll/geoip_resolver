@@ -7,9 +7,9 @@ geoip_services:
     - url: "http://freegeoip.net/json/"
       parse_mode: "freegeoip"
       limit: 165
-    # - url: "http://geoip.nekudo.com/api/"
-    #  parse_mode: "shiny_geoip"
-    #  limit: 100
+    - url: "http://geoip.nekudo.com/api/"
+      parse_mode: "shiny_geoip"
+      limit: 100
     - url: "http://example.com"
       parse_mode: "invalid"
       limit: 50
