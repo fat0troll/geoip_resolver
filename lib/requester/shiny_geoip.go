@@ -66,26 +66,31 @@ func (rq *Requester) getIPFromShinyGeoIP(requestURL string) map[string]string {
 		return result
 	}
 
-	if response.Country.CountryCode != "" {
+	if response.IP != "" {
 		if response.Country.CountryCode != "" {
-			result["status"] = "success"
-			result["description"] = "Found IP address data in freegeoip service!"
-			result["ip"] = response.IP
-			result["country_code"] = response.Country.CountryCode
-			result["country_name"] = response.Country.CountryName
+			if response.Country.CountryCode != "" {
+				result["status"] = "success"
+				result["description"] = "Found IP address data in freegeoip service!"
+				result["ip"] = response.IP
+				result["country_code"] = response.Country.CountryCode
+				result["country_name"] = response.Country.CountryName
+				result["source"] = "shiny_geoip"
 
-			cachedData := datamappings.CachedGeolocation{}
-			cachedData.IPAddress = response.IP
-			cachedData.CountryCode = response.Country.CountryCode
-			cachedData.CountryName = response.Country.CountryName
-			t := time.Now().UTC()
-			cachedData.CreateTime = t
-			c.Cache.AddIPAddressToCache(&cachedData)
-		} else {
-			result["status"] = "error"
-			result["description"] = "Service freegeoip doesn't know country of this IP address"
-			result["ip"] = response.IP
+				cachedData := datamappings.CachedGeolocation{}
+				cachedData.IPAddress = response.IP
+				cachedData.CountryCode = response.Country.CountryCode
+				cachedData.CountryName = response.Country.CountryName
+				t := time.Now().UTC()
+				cachedData.CreateTime = t
+				c.Cache.AddIPAddressToCache(&cachedData)
+			} else {
+				result["status"] = "error"
+				result["description"] = "Service freegeoip doesn't know country of this IP address"
+				result["ip"] = response.IP
+			}
 		}
+		result["status"] = "error"
+		result["description"] = "Service freegeoip doesn't know this IP address"
 	}
 
 	return result

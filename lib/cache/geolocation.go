@@ -3,6 +3,7 @@ package cache
 import (
 	"errors"
 	"github.com/fat0troll/geoip_resolver/lib/datamappings"
+	"strings"
 	"time"
 )
 
@@ -47,7 +48,7 @@ func (cc *Cache) GetAllCachedIPs() []datamappings.CachedGeolocation {
 func (cc *Cache) GetCachedDataForIP(IPAddress string) (*datamappings.CachedGeolocation, error) {
 	cc.geolocationsMutex.Lock()
 	for i := range cc.geolocations {
-		if cc.geolocations[i].IPAddress == IPAddress {
+		if strings.Contains(cc.geolocations[i].IPAddress, IPAddress) {
 			cc.geolocationsMutex.Unlock()
 			return cc.geolocations[i], nil
 		}

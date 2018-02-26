@@ -52,6 +52,7 @@ func (rq *Requester) getIPFromFreeGeoIP(requestURL string) map[string]string {
 		result["ip"] = response.IP
 		result["country_code"] = response.CountryCode
 		result["country_name"] = response.CountryName
+		result["source"] = "freegeoip"
 
 		cachedData := datamappings.CachedGeolocation{}
 		cachedData.IPAddress = response.IP

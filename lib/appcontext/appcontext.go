@@ -1,12 +1,9 @@
 package appcontext
 
 import (
-	"encoding/json"
-	"github.com/Tomasen/realip"
 	"github.com/fat0troll/geoip_resolver/lib/cache/cacheinterface"
 	"github.com/fat0troll/geoip_resolver/lib/config"
 	"github.com/fat0troll/geoip_resolver/lib/requester/requesterinterface"
-	"net"
 	"net/http"
 	"os"
 	"source.pztrn.name/golibs/flagger"
@@ -69,34 +66,6 @@ func (c *Context) RegisterRequesterInterface(ri requesterinterface.RequesterInte
 
 // StartHTTPListener starts HTTP server on given port
 func (c *Context) StartHTTPListener() {
-	response := make(map[string]string)
-	responseBody := make([]byte, 0)
-	c.HTTPServerMux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		clientIP := ""
-		ipInQuery, ipInQueryFound := r.URL.Query()["ip"]
-		if ipInQueryFound && len(ipInQuery) > 0 {
-			realIP := net.ParseIP(ipInQuery[0])
-			if realIP != nil {
-				clientIP = ipInQuery[0]
-			}
-		} else {
-			clientIP = realip.FromRequest(r)
-		}
-
-		w.Header().Add("Content-Type", "application/json; charset=utf-8")
-		if clientIP != "" {
-			response = c.Requester.ProcessRequest(clientIP)
-		} else {
-			w.WriteHeader(404)
-			response["status"] = "error"
-			response["description"] = "Invalid IP address query"
-			response["ip"] = "null"
-		}
-
-		responseBody, _ = json.Marshal(response)
-		w.Write(responseBody)
-	})
-
 	c.Log.Info("HTTP server started at http://" + c.Cfg.HTTPServer.Host + ":" + c.Cfg.HTTPServer.Port)
 	err := http.ListenAndServe(c.Cfg.HTTPServer.Host+":"+c.Cfg.HTTPServer.Port, c.HTTPServerMux)
 	c.Log.Fatalln(err)
