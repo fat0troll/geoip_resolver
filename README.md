@@ -1,12 +1,12 @@
 # GeoIP resolver
 
-GeoIP resolver — simple server, created for checking IP address geolocation by remote services. Currently supports ``freegeoip.net`` and any service, based on [https://github.com/nekudo/shiny_geoip](shiny_geoip).
+GeoIP resolver — simple server, created for checking IP address geolocation by remote services. Currently supports ``freegeoip.net`` and any service, based on [shiny_geoip](https://github.com/nekudo/shiny_geoip).
 
 ## Installation
 
     go get -u github.com/fat0troll/geoip_resolver/cmd/geoip_resolver
 
-Example configuration file located [https://github.com/fat0troll/geoip_resolver/blob/master/cmd/geoip_resolver/config.yml.dist](here).
+Example configuration file located [here](https://github.com/fat0troll/geoip_resolver/blob/master/cmd/geoip_resolver/config.yml.dist).
 
 ## Running
 
