@@ -1,0 +1,8 @@
+stages:
+  - test
+
+test_job:
+  stage: test
+  tags:
+    - linux1
+  script: go test -test.v .
